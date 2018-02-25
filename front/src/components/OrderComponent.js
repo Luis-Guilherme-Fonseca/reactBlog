@@ -40,11 +40,11 @@ class Order extends Component{
 			<div>
 				{ types.map((type) =>
 					<div>
-						{order === type + "+" &&
-							<button onClick={this.order.bind(this, posts, "-", {type})}>order</button>
+						{order === (type + "+") &&
+							<button onClick={this.order.bind(this, posts, "-", type)}>order</button>
 						}
-						{order !== type + "+" &&
-							<button onClick={this.order.bind(this, posts, "+", {type})}>order</button>
+						{order !== (type + "+") &&
+							<button onClick={this.order.bind(this, posts, "+", type)}>order</button>
 						}
 					</div>
 				)}
