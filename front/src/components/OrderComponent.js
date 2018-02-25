@@ -34,20 +34,18 @@ class Order extends Component{
 
 	render(){
 		const {posts, order} = this.props.posts
-		const types = ['votes']
-		console.log(order, posts)
+		const types = ['votes', 'date']
 		return(
-			<div>
-				{ types.map((type) =>
-					<div>
-						{order === (type + "+") &&
-							<button onClick={this.order.bind(this, posts, "-", type)}>order</button>
-						}
-						{order !== (type + "+") &&
-							<button onClick={this.order.bind(this, posts, "+", type)}>order</button>
-						}
-					</div>
-				)}
+			<div className="btn-group">
+				{ types.map((type) =>{
+					if(order === (type + "+")){  
+						return <button key={type} className="selectedSort" onClick={this.order.bind(this, posts, "-", type)}>{type}</button>
+					}else if(order === (type + "-")){
+						return <button key={type} className="selectedSort" onClick={this.order.bind(this, posts, "+", type)}>{type}</button>
+					}else{
+						return <button key={type} onClick={this.order.bind(this, posts, "+", type)}>{type}</button>
+					}
+				})}
 			</div>
 		)
 	}
