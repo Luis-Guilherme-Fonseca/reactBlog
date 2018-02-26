@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Card, CardTitle, Col, Row } from 'react-materialize';
 import { connect } from 'react-redux';
 import { orderPosts } from '../actions';
 

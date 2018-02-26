@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import * as ReadableAPI from '../utils/ReadableAPI';
 import {
 	ADD_RECIPE,
 	REMOVE_FROM_CALENDAR,
