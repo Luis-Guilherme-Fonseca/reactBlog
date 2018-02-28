@@ -10,19 +10,18 @@ class Category extends Component{
 	}
 
 	render(){
-		const categories = this.props.categories['categories'].filter((category) => category.name == this.props.match.params.category);
-		const {posts} = this.props.posts;
+		const categories = this.props.categories['categories'].filter((category) => category.name === this.props.match.params.category);
 		
 		return(
 			<div>
-				{categories[0] != undefined &&
+				{categories[0] !== undefined &&
 					<div>
 						<h4>{categories[0].name}</h4>
 						<hr/>
 						<Posts />
 					</div>
 				}
-				{categories == undefined &&
+				{categories === undefined &&
 					<h4>We coulden´t find this category: <i>{this.props.match.params.category}</i></h4>
 				}
 			</div>
@@ -33,7 +32,6 @@ class Category extends Component{
 function mapStateToProps ({ categories, posts }) {
 	return {
 		categories,
-		posts
     }
 }
 

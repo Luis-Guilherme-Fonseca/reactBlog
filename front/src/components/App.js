@@ -19,13 +19,13 @@ class App extends Component {
 		const categories = this.props.categories['categories'];
 		return (
 			<div className="App">
-				{categories != undefined &&
+				{categories !== undefined &&
 					<div>
 						<Navbar left>
 							<NavItem href='/'><Icon>home</Icon></NavItem>
 							{categories != null &&
 								categories.map((category, index) =>
-									<NavItem href={"/posts/" + category.path}>{category.name}</NavItem>
+									<NavItem key={index} href={"/posts/" + category.path}>{category.name}</NavItem>
 								) 
 							}
 						</Navbar>
@@ -37,8 +37,6 @@ class App extends Component {
 							<Category {...routeProps}/>
 						}/>
 					</div>
-					
-
 				}
 			</div>
 		);
