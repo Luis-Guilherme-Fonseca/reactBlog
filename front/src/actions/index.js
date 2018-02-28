@@ -1,27 +1,10 @@
 import * as ReadableAPI from '../utils/ReadableAPI';
 
-export const ADD_RECIPE = 'ADD_RECIPE';
-export const REMOVE_FROM_CALENDAR = 'REMOVE_FROM_CALENDAR';
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_POSTS = 'GET_POSTS';
 export const ORDER_POSTS = 'ORDER_POSTS';
 
-export function addRecipe({day, recipe, meal}){
-	return{
-		type: ADD_RECIPE,
-		recipe,
-		day,
-		meal,
-	}
-}
-
-export function removeFromCalendar ({day, meal}){
-	return{
-		type: REMOVE_FROM_CALENDAR,
-		day,
-		meal,
-	}
-}
+//posts actions
 
 export const getPosts = posts => ({
 	type: GET_POSTS,
@@ -41,6 +24,16 @@ export function orderPosts({posts, order}){
 		order
 	}
 }
+
+export const fetchCategoryPosts = (category) => dispatch => (
+	ReadableAPI
+		.getPostsByCategory(category)
+		.then(posts => dispatch(getPosts(posts)))
+)
+
+//comments actions
+
+//categories actions
 
 export const getCategory = categories => ({
 	type: GET_CATEGORY,

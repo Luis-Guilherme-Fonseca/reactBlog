@@ -6,7 +6,7 @@ import { orderPosts } from '../actions';
 import Order from './OrderComponent';
 
 
-class Home extends Component {
+class PostsComponent extends Component {
 	
 	render(){
 		const {categories} = this.props.categories;
@@ -50,4 +50,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home)
+)(PostsComponent)

@@ -27,7 +27,7 @@ export const getPost = (postID) =>
 		.then(data => data)
 
 export const getPostsByCategory = (category) =>
-	fetch(`${api}/${category}/posts`)
+	fetch(`${api}/${category}/posts`, { headers })
 		.then(res => res.json())
 		.then(data => data)
 
@@ -110,7 +110,7 @@ export const editComment = (commentID, comment) =>
 			...headers,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ option })
+		body: JSON.stringify({ comment })
 	}).then(res => res.json())
 		.then(data => data)
 

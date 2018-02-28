@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Navbar, NavItem, Icon } from 'react-materialize';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addRecipe, removeFromCalendar, fetchCategories, fetchPosts } from '../actions'
-import Home from './Home';
+import { fetchCategories, fetchPosts } from '../actions'
+import PostsComponent from './PostsComponent';
+import Category from './Category';
 import Posts from './Post';
 import '../App.css';
 
@@ -15,31 +16,36 @@ class App extends Component {
 	}
 
 	render() {
-		const categories = this.props.categories['categories']
+		const categories = this.props.categories['categories'];
 		return (
 			<div className="App">
-				<div>
-					<Navbar left>
-						<NavItem href='/'><Icon>home</Icon></NavItem>
-						{categories != null &&
-							categories.map((category, index) =>
-								<NavItem href={"/" + category.path}>{category.name}</NavItem>
-							) 
-						}
-					</Navbar>
-				</div>
-				<Route exact path='/' render={() =>
-					<Home/>
-				}/>
-				<Route exact path='/posts' render={() =>
-					<Posts/>
-				}/>
+				{categories != undefined &&
+					<div>
+						<Navbar left>
+							<NavItem href='/'><Icon>home</Icon></NavItem>
+							{categories != null &&
+								categories.map((category, index) =>
+									<NavItem href={"/posts/" + category.path}>{category.name}</NavItem>
+								) 
+							}
+						</Navbar>
+						<Route exact path='/' render={() =>
+							<PostsComponent/>
+						}/>
+
+						<Route path='/posts/:category' render={routeProps =>
+							<Category {...routeProps}/>
+						}/>
+					</div>
+					
+
+				}
 			</div>
 		);
 	}
 }
 
-function mapStateToProps ({ food, calendar, categories }) {
+function mapStateToProps ({ categories }) {
 	return {
 		categories
     }
@@ -47,8 +53,6 @@ function mapStateToProps ({ food, calendar, categories }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
-    	selectRecipe: (data) => dispatch(addRecipe(data)),
-    	remove: (data) => dispatch(removeFromCalendar(data)),
     	getCategories: () => dispatch(fetchCategories()),
     	getPosts: () => dispatch(fetchPosts()),
 	}
