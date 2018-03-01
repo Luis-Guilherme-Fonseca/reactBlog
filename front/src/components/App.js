@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchCategories, fetchPosts } from '../actions'
 import PostsComponent from './PostsComponent';
 import Category from './Category';
-import Posts from './Post';
+import Post from './Post';
 import '../App.css';
 
 class App extends Component {
@@ -35,6 +35,10 @@ class App extends Component {
 
 						<Route path='/posts/:category' render={routeProps =>
 							<Category {...routeProps}/>
+						}/>
+
+						<Route path='/post/:ID' render={routeProps =>
+							<Post {...routeProps}/>
 						}/>
 					</div>
 				}

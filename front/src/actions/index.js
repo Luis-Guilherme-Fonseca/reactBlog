@@ -3,6 +3,8 @@ import * as ReadableAPI from '../utils/ReadableAPI';
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_POSTS = 'GET_POSTS';
 export const ORDER_POSTS = 'ORDER_POSTS';
+export const GET_COMMENTS = 'GET_COMMENTS';
+
 
 //posts actions
 
@@ -14,6 +16,12 @@ export const getPosts = posts => ({
 export const fetchPosts = () => dispatch => (
 	ReadableAPI
 		.getPosts()
+		.then(posts => dispatch(getPosts(posts)))
+)
+
+export const fetchPost = (ID) => dispatch => (
+	ReadableAPI
+		.getPost(ID)
 		.then(posts => dispatch(getPosts(posts)))
 )
 
@@ -32,6 +40,17 @@ export const fetchCategoryPosts = (category) => dispatch => (
 )
 
 //comments actions
+
+export const getComments = comments => ({
+	type: GET_COMMENTS,
+	comments
+})
+
+export const fetchComments = (postID) => dispatch => (
+	ReadableAPI
+		.getComments(postID)
+		.then(comments => dispatch(getComments(comments)))
+)
 
 //categories actions
 

@@ -3,6 +3,7 @@ import {
 	GET_CATEGORY,
 	GET_POSTS,
 	ORDER_POSTS,
+	GET_COMMENTS,
 } from '../actions';
 
 
@@ -39,7 +40,21 @@ function posts(state = {order : "votes+"}, action){
 	}
 }
 
+function comments(state = {}, action){
+	const { comments } = action;
+	switch(action.type){
+		case GET_COMMENTS:
+			return {
+				...state,
+				comments 
+			}
+		default:
+			return state
+	}
+}
+
 export default combineReducers({
 	categories,
 	posts,
+	comments,
 })

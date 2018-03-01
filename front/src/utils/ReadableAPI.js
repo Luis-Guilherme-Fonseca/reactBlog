@@ -11,10 +11,14 @@ const headers = {
 	'Authorization': token
 }
 
+//funções de categoria
+
 export const getCategories = () => 
 	fetch(`${api}/categories`, { headers })
 		.then(res => res.json())
 		.then(data => data.categories)
+
+//funções de Posts
 
 export const getPosts = () => 
 	fetch(`${api}/posts`, { headers })
@@ -71,9 +75,11 @@ export const editPost = (postID, post) =>
 	}).then(res => res.json())
 		.then(data => data)
 
+//funções de comentarios
+
 export const getComments = (postID) =>
 	fetch(`${api}/posts/${postID}/comments`, { headers })
-		.then(res => res.json)
+		.then(res => res.json())
 		.then(data => data)
 
 export const addComment = (comment) =>
