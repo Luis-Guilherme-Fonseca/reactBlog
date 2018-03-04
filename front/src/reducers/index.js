@@ -4,6 +4,7 @@ import {
 	GET_POSTS,
 	ORDER_POSTS,
 	GET_COMMENTS,
+	GET_ERROR,
 } from '../actions';
 
 
@@ -53,8 +54,23 @@ function comments(state = {}, action){
 	}
 }
 
+
+function error(state = {}, action){
+	const { error } = action;
+	switch(action.type){
+		case GET_ERROR:
+			return {
+				...state,
+				error
+			}
+		default:
+			return state
+	}
+}
+
 export default combineReducers({
 	categories,
 	posts,
 	comments,
+	error
 })

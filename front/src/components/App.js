@@ -16,10 +16,12 @@ class App extends Component {
 	}
 
 	render() {
-		const categories = this.props.categories['categories'];
+		const { categories } = this.props.categories;
+		const { error } = this.props.error;
 		return (
 			<div className="App">
-				{categories !== undefined &&
+
+				{categories !== undefined && error === undefined &&
 					<div>
 						<Navbar left>
 							<NavItem href='/'><Icon>home</Icon></NavItem>
@@ -42,14 +44,21 @@ class App extends Component {
 						}/>
 					</div>
 				}
+				{error !== undefined &&
+					<div>
+						<h2>{error.title}</h2>
+						<p>{error.message}</p>
+					</div>
+				}
 			</div>
 		);
 	}
 }
 
-function mapStateToProps ({ categories }) {
+function mapStateToProps ({ categories, error }) {
 	return {
-		categories
+		categories,
+		error
     }
 }
 
