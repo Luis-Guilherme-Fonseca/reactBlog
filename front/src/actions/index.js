@@ -64,6 +64,12 @@ export const editComments = ({id, body, comments, index}) => dispatch => (
 		.catch((err) => dispatch(getError(err)))
 )
 
+export const deleteComments = ({id, comments}) => dispatch => (
+	ReadableAPI
+		.deleteComment(id)
+		.then(() => getComments(comments))
+)
+
 //categories actions
 
 export const getCategory = categories => ({

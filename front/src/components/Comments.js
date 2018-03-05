@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { CardPanel, Col, Row, Modal } from 'react-materialize';
-import { fetchComments, editComments } from '../actions';
+import { fetchComments, editComments, deleteComments } from '../actions';
 
 class Comments extends Component {
 	state={
@@ -33,6 +33,18 @@ class Comments extends Component {
 			data.index = this.state.index;
 			this.props.putComment(data)
 		}
+		this.closeModal()
+	}
+
+	deleteComment = (id) => {
+		let comments = this.props.comments['comments'];
+		comments.splice(this.state.index, 1);
+
+		let data = {}
+		data.comments = comments;
+		data.id = id;
+		this.props.disableComment(data)
+
 		this.closeModal()
 	}
 
@@ -69,27 +81,27 @@ class Comments extends Component {
 						</Row>
 					)
 				}
-				<Modal fixedFooter
-					header='Edit comment'
-					actions={
-						<div>
-							<button className="btn waves-effect waves-light btn-flat modal-action modal-close" onClick={this.closeModal}>Close</button>
-							<button className="btn waves-effect waves-light btn-flat modal-action modal-confirm" onClick={this.editComment}>Delete</button>
-							<button className="btn waves-effect waves-light btn-flat modal-action modal-confirm" onClick={this.editComment}>Save</button>
+				{this.state.isOpen &&
+					<Modal fixedFooter
+						header='Edit comment'
+						actions={
+							<div>
+								<button className="btn waves-effect waves-light btn-flat modal-action modal-close" onClick={this.closeModal}>Close</button>
+								<button className="btn waves-effect waves-light btn-flat modal-action modal-confirm" value={comments[index].id} onClick={(event) => this.deleteComment(event.target.value)}>Delete</button>
+								<button className="btn waves-effect waves-light btn-flat modal-action modal-confirm" onClick={this.editComment}>Save</button>
+							</div>
+						}
+						style={this.state.isOpen ? display : hide}>
+					<div>
+						{console.log(this.state.commentChange)}
+						<input
+							type="text"
+							defaultValue={comments[index].body}
+							onChange={(event) => this.setState({commentChange: event.target.value})}
+							/>
 						</div>
-					}
-					style={this.state.isOpen ? display : hide}>
-		        	{this.state.isOpen && 
-		        		<div>
-		        			{console.log(this.state.commentChange)}
-		        			<input
-		        				type="text"
-		        				defaultValue={comments[index].body}
-		        				onChange={(event) => this.setState({commentChange: event.target.value})}
-		        			/>
-		        		</div>
-		        	}
-				</Modal>
+					</Modal>
+				}
 			</div>
 		)
 	}
@@ -98,17 +110,18 @@ class Comments extends Component {
 function mapStateToProps ({ comments }) {
 	return {
 		comments
-    }
+	}
 }
 
 function mapDispatchToProps (dispatch){
 	return{
 		getComments: (data) => dispatch(fetchComments(data)),
-		putComment: (data) => dispatch(editComments(data))
+		putComment: (data) => dispatch(editComments(data)),
+		disableComment: (data) => dispatch(deleteComments(data))
 	}
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(Comments)
