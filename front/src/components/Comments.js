@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { CardPanel, Col, Row, Modal } from 'react-materialize';
+import CreateComment from './CreateComment';
 import { fetchComments, editComments, deleteComments } from '../actions';
 
 class Comments extends Component {
@@ -63,20 +64,22 @@ class Comments extends Component {
 		};
 		return (
 			<div>
+				<CreateComment/>
+				{console.log(comments)}
 				{comments != null &&
 					comments.map((comment, index) =>
 						<Row key={index}>
 							{comment != null &&
-							<Col key={index + comment.id} s={6} m={4} offset='s3 m4'>
-								<CardPanel key={comment.id} className="small">
-									<h5 key={comment.author}>{comment.author}</h5>
-									<p key={comment.author + index}>{comment.body}</p>
-									<button value={index} onClick={(event) => 
-										this.openModal(event.target.value)}>
-										edit
-									</button>
-								</CardPanel>
-							</Col>
+								<Col key={index + comment.id} s={6} m={4} offset='s3 m4'>
+									<CardPanel key={comment.id} className="small">
+										<h5 key={comment.author}>{comment.author}</h5>
+										<p key={comment.author + index}>{comment.body}</p>
+										<button value={index} onClick={(event) => 
+											this.openModal(event.target.value)}>
+											edit
+										</button>
+									</CardPanel>
+								</Col>
 							}
 						</Row>
 					)
@@ -93,7 +96,7 @@ class Comments extends Component {
 						}
 						style={this.state.isOpen ? display : hide}>
 					<div>
-						{console.log(this.state.commentChange)}
+						{console.log(comments)}
 						<input
 							type="text"
 							defaultValue={comments[index].body}

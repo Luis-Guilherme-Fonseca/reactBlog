@@ -4,6 +4,7 @@ import {
 	GET_POSTS,
 	ORDER_POSTS,
 	GET_COMMENTS,
+	ADD_COMMENT,
 	GET_ERROR,
 } from '../actions';
 
@@ -22,7 +23,7 @@ function categories(state = {}, action){
 	}
 }
 
-function posts(state = {order : "votes+"}, action){
+function posts(state = {order: "votes+"}, action){
 	const { posts, order } = action;
 	switch(action.type){
 		case GET_POSTS:
@@ -42,12 +43,17 @@ function posts(state = {order : "votes+"}, action){
 }
 
 function comments(state = {}, action){
-	const { comments } = action;
+	const { comments, comment } = action;
 	switch(action.type){
 		case GET_COMMENTS:
 			return {
 				...state,
 				comments 
+			}
+		case ADD_COMMENT:
+			return {
+				...state,
+				[comments]: comments.push(comment)
 			}
 		default:
 			return state

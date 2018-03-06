@@ -4,6 +4,7 @@ export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_POSTS = 'GET_POSTS';
 export const ORDER_POSTS = 'ORDER_POSTS';
 export const GET_COMMENTS = 'GET_COMMENTS';
+export const ADD_COMMENT = 'ADD_COMMENT';
 export const GET_ERROR = 'GET_ERROR';
 
 
@@ -68,6 +69,20 @@ export const deleteComments = ({id, comments}) => dispatch => (
 	ReadableAPI
 		.deleteComment(id)
 		.then(() => getComments(comments))
+		.catch((err) => dispatch(getError(err)))
+)
+
+export const addComment = (comment, comments) => ({
+	type: ADD_COMMENT,
+	comment,
+	comments
+})
+
+export const createComments = (comment, comments) => dispatch => (
+	ReadableAPI
+		.addComment(comment)
+		.then(res => dispatch(addComment(res, comments)))
+		.catch((err) => dispatch(getError(err)))
 )
 
 //categories actions
