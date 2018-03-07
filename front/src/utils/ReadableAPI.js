@@ -35,14 +35,14 @@ export const getPostsByCategory = (category) =>
 		.then(res => res.json())
 		.then(data => data)
 
-export const addPost = (post) =>
+export const addPost = ({id, timestamp, title, body, author, category}) =>
 	fetch(`${api}/posts`, {
 	    method: 'POST',
 	    headers: {
     		...headers,
     		'Content-Type': 'application/json'
     	},
-    	body: JSON.stringify({ post })
+    	body: JSON.stringify({id, timestamp, title, body, author, category})
 	}).then(res => res.json())
     	.then(data => data)
 
@@ -64,14 +64,14 @@ export const deletePost = (postID) =>
 	}).then(res => res.json())
 		.then(data => data)
 
-export const editPost = (postID, post) =>
+export const editPost = (postID, title, body) =>
 	fetch(`${api}/posts/${postID}`, {
 		method: 'PUT',
 		headers: {
 			...headers,
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ post })
+		body: JSON.stringify({ title, body })
 	}).then(res => res.json())
 		.then(data => data)
 

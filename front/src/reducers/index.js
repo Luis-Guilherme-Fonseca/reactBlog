@@ -3,6 +3,7 @@ import {
 	GET_CATEGORY,
 	GET_POSTS,
 	ORDER_POSTS,
+	ADD_POST,
 	GET_COMMENTS,
 	ADD_COMMENT,
 	GET_ERROR,
@@ -24,7 +25,7 @@ function categories(state = {}, action){
 }
 
 function posts(state = {order: "votes+"}, action){
-	const { posts, order } = action;
+	const { posts, post, order } = action;
 	switch(action.type){
 		case GET_POSTS:
 			return {
@@ -36,6 +37,11 @@ function posts(state = {order: "votes+"}, action){
 				...state,
 				posts: posts,
 				order: order
+			}
+		case ADD_POST:
+			return {
+				...state,
+				[posts]: posts.push(post)
 			}
 		default:
 			return state

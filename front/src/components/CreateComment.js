@@ -1,9 +1,8 @@
-import React, { Component } from 'react'; 
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Card, Col, Row, Input } from 'react-materialize';
-import { fetchComments, editComments, deleteComments, createComments } from '../actions';
-import uuidv4 from 'uuid/v4'
+import { createComments } from '../actions';
+import uuidv4 from 'uuid/v4';
 
 class CreateComment extends Component{
 	state={
@@ -26,11 +25,12 @@ class CreateComment extends Component{
 			comment.parentId = comments[0].parentId;
 
 			this.props.addComments(comment, comments)
-		}		
+		}
+		this.setState({author: ""});
+		this.setState({body: ""})
 	}
 
 	render(){
-		const {comment} = this.props.comments;
 		return(
 			<div>
 				<Row>

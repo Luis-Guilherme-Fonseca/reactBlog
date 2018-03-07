@@ -1,7 +1,6 @@
-import React, { Component } from 'react'; 
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { CardPanel, Col, Row, Modal } from 'react-materialize';
+import { CardPanel, Col, Row, Modal, Input } from 'react-materialize';
 import CreateComment from './CreateComment';
 import { fetchComments, editComments, deleteComments } from '../actions';
 
@@ -56,20 +55,15 @@ class Comments extends Component {
 	render(){
 		const {comments} = this.props.comments;
 		const {index} = this.state;
-		const display = {
-			display: 'block'
-		};
-		const hide = {
-			display: 'none'
-		};
+		const display = {display: 'block'};
+		const hide = {display: 'none'};
 		return (
 			<div>
 				<CreateComment/>
-				{console.log(comments)}
 				{comments != null &&
 					comments.map((comment, index) =>
 						<Row key={index}>
-							{comment != null &&
+							{comment.parentDeleted !== true &&
 								<Col key={index + comment.id} s={6} m={4} offset='s3 m4'>
 									<CardPanel key={comment.id} className="small">
 										<h5 key={comment.author}>{comment.author}</h5>
@@ -97,8 +91,9 @@ class Comments extends Component {
 						style={this.state.isOpen ? display : hide}>
 					<div>
 						{console.log(comments)}
-						<input
-							type="text"
+						<Input
+							type="textarea"
+							label="Comment"
 							defaultValue={comments[index].body}
 							onChange={(event) => this.setState({commentChange: event.target.value})}
 							/>

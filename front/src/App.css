@@ -57,3 +57,17 @@
 .btn-group .selectedSort {
     background-color: #000000;
 }
+
+.modal {
+  z-index: 2;
+  position: fixed;
+}
+
+.clear {
+  background-color: #0000;
+  margin-left: 10px;
+}
+
+.clear i {
+  color: #000;
+}

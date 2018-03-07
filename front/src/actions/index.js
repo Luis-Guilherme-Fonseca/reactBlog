@@ -2,11 +2,12 @@ import * as ReadableAPI from '../utils/ReadableAPI';
 
 export const GET_CATEGORY = 'GET_CATEGORY';
 export const GET_POSTS = 'GET_POSTS';
+export const ADD_POST = 'ADD_POST';
 export const ORDER_POSTS = 'ORDER_POSTS';
 export const GET_COMMENTS = 'GET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const GET_ERROR = 'GET_ERROR';
-
+export const DISABLE_POST = 'DISABLE_POST';
 
 //posts actions
 
@@ -36,10 +37,45 @@ export function orderPosts({posts, order}){
 	}
 }
 
+export const addPost = (post, posts) => ({
+	type: ADD_POST,
+	post,
+	posts
+})
+
+export const createPost = (post, posts) => dispatch => (
+	ReadableAPI
+		.addPost(post)
+		.then((post) => dispatch(addPost(post, posts)))
+		.catch((err) => dispatch(getError(err)))		
+)
+
+export const editPost = (post) => dispatch => (
+	ReadableAPI
+		.editPost(post.id, post.title, post.body)
+		.then(post => dispatch(getPosts(post)))
+		.catch((err) => dispatch(getError(err)))
+)
+
 export const fetchCategoryPosts = (category) => dispatch => (
 	ReadableAPI
 		.getPostsByCategory(category)
 		.then(posts => dispatch(getPosts(posts)))
+		.catch((err) => dispatch(getError(err)))
+)
+
+export function disablePost(posts, post){
+	return{
+		type: DISABLE_POST,
+		posts,
+		post
+	}
+}
+
+export const deletePost = (id, posts) => dispatch => (
+	ReadableAPI
+		.deletePost(id)
+		.then(post => dispatch(disablePost(posts, post)))
 		.catch((err) => dispatch(getError(err)))
 )
 
