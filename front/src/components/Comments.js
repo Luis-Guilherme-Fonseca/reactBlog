@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { CardPanel, Col, Row, Modal, Input } from 'react-materialize';
+import { CardPanel, Col, Row, Modal, Input, Button } from 'react-materialize';
 import CreateComment from './CreateComment';
-import { fetchComments, editComments, deleteComments } from '../actions';
+import { fetchComments, editComments, deleteComments, voteComment } from '../actions';
 
 class Comments extends Component {
 	state={
@@ -48,6 +48,16 @@ class Comments extends Component {
 		this.closeModal()
 	}
 
+	vote = (res) => {
+		let comments = this.props.comments['comments'];
+		if(res.option === 'upVote'){
+			comments[res.index].voteScore += 1;
+		}else if(res.option === 'downVote'){
+			comments[res.index].voteScore -= 1;
+		}
+		this.props.commentVote(res.comment.id, res.option, comments);
+	}
+
 	componentWillMount(){
 		this.props.getComments(this.props.ID)
 	}
@@ -72,6 +82,10 @@ class Comments extends Component {
 											this.openModal(event.target.value)}>
 											edit
 										</button>
+										<span className='clear'>Score: {comment.voteScore}  
+											<Button floating icon='thumb_up' onClick={() => this.vote({option: 'upVote', comment, index})} className='clear'/>
+											<Button floating icon='thumb_down' onClick={() => this.vote({option: 'downVote', comment, index})} className='clear'/>
+										</span>
 									</CardPanel>
 								</Col>
 							}
@@ -115,7 +129,8 @@ function mapDispatchToProps (dispatch){
 	return{
 		getComments: (data) => dispatch(fetchComments(data)),
 		putComment: (data) => dispatch(editComments(data)),
-		disableComment: (data) => dispatch(deleteComments(data))
+		disableComment: (data) => dispatch(deleteComments(data)),
+		commentVote: (id, option, comments) => dispatch(voteComment(id, option, comments)),
 	}
 }
 

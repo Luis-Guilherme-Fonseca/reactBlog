@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, Col, Row, Button, Modal, Input } from 'react-materialize';
 import Comments from './Comments';
-import { fetchPost, deletePost, editPost } from '../actions';
+import { fetchPost, deletePost, editPost, votePost } from '../actions';
 
 class Post extends Component {
 	state={
@@ -37,6 +37,10 @@ class Post extends Component {
 		this.closeModal();
 	}
 
+	vote = (option) => {
+		this.props.postVote(this.props.match.params.ID, option);
+	}
+
 	componentWillMount(){
 		this.props.getPost(this.props.match.params.ID);
 	}
@@ -50,19 +54,18 @@ class Post extends Component {
 			<div>
 				{posts != null &&
 					<Row>
-						{console.log(posts)}
 						<Col s={12} m={8} offset='m2'>
 							<Card className="small"
 								header={<CardTitle image={imageURL}></CardTitle>}>
 								<h4>{posts.title}</h4>
+								<Button	icon="edit"
+									onClick={this.openModal}/>
 							</Card>
 							<p>{posts.body}</p>
 							<span>Readers review: {posts.voteScore}  
-									<Button floating icon='thumb_up' className='clear'/>
-									<Button floating icon='thumb_down' className='clear'/>
+									<Button floating icon='thumb_up' onClick={() => this.vote('upVote')} className='clear'/>
+									<Button floating icon='thumb_down' onClick={() => this.vote('downVote')} className='clear'/>
 							</span>
-							<Button	icon="edit"  style={margin-left: 10px}
-								onClick={this.openModal}/>
 						</Col>
 						<Comments ID={this.props.match.params.ID}/>
 					</Row>
@@ -110,6 +113,7 @@ function mapDispatchToProps (dispatch){
 		getPost: (data) => dispatch(fetchPost(data)),
 		disablePost: (id, posts) => dispatch(deletePost(id, posts)),
 		editPost: (post) => dispatch(editPost(post)),
+		postVote: (id, option) => dispatch(votePost(id, option)),
 	}
 }
 

@@ -64,18 +64,17 @@ export const fetchCategoryPosts = (category) => dispatch => (
 		.catch((err) => dispatch(getError(err)))
 )
 
-export function disablePost(posts, post){
-	return{
-		type: DISABLE_POST,
-		posts,
-		post
-	}
-}
+export const votePost = (id, option) => dispatch => (
+	ReadableAPI
+		.postVote(id, option)
+		.then(post => dispatch(getPosts(post)))
+		.catch((err) => dispatch(getError(err)))
+)
 
 export const deletePost = (id, posts) => dispatch => (
 	ReadableAPI
 		.deletePost(id)
-		.then(post => dispatch(disablePost(posts, post)))
+		.then(() => dispatch(getPosts(posts)))
 		.catch((err) => dispatch(getError(err)))
 )
 
@@ -118,6 +117,13 @@ export const createComments = (comment, comments) => dispatch => (
 	ReadableAPI
 		.addComment(comment)
 		.then(res => dispatch(addComment(res, comments)))
+		.catch((err) => dispatch(getError(err)))
+)
+
+export const voteComment = (id, option, comments) => dispatch => (
+	ReadableAPI
+		.commentVote(id, option)
+		.then(() => dispatch(getComments(comments)))
 		.catch((err) => dispatch(getError(err)))
 )
 
