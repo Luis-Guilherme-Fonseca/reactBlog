@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, NavItem, Icon } from 'react-materialize';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchCategories, fetchPosts } from '../actions'
+import { fetchCategories } from '../actions'
 import PostsComponent from './PostsComponent';
 import Category from './Category';
 import Post from './Post';
@@ -12,7 +12,6 @@ class App extends Component {
 	
 	componentWillMount(){
 		this.props.getCategories()
-		this.props.getPosts()
 	}
 
 	render() {
@@ -64,8 +63,7 @@ function mapStateToProps ({ categories, error }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
-    	getCategories: () => dispatch(fetchCategories()),
-    	getPosts: () => dispatch(fetchPosts()),
+		getCategories: () => dispatch(fetchCategories()),
 	}
 }
 

@@ -28,32 +28,30 @@
 }
 
 .btn-group button {
-    background-color: #4CAF50; /* Green background */
-    border: 1px solid green; /* Green border */
-    color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
+    background-color: #4CAF50; 
+    border: 1px solid green; 
+    color: white; 
+    padding: 10px 24px; 
     margin-top: 2vh;
     margin-bottom: 2vh;
-    cursor: pointer; /* Pointer/hand icon */
-    float: left; /* Float the buttons side by side */
+    cursor: pointer; 
+    float: left; 
 }
 
 .btn-group button:not(:last-child) {
-    border-right: none; /* Prevent double borders */
+    border-right: none; 
 }
 
 .btn-group button:first-child{
   margin-left: 1vw;
 }
 
-/* Clear floats (clearfix hack) */
 .btn-group:after {
     content: "";
     clear: both;
     display: table;
 }
 
-/* Add a background color on hover */
 .btn-group .selectedSort {
     background-color: #000000;
 }
@@ -70,4 +68,8 @@
 
 .clear i {
   color: #000;
+}
+
+.bottom-space { 
+  padding-bottom: 20px;
 }

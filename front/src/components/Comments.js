@@ -58,6 +58,19 @@ class Comments extends Component {
 		this.props.commentVote(res.comment.id, res.option, comments);
 	}
 
+	commentsLenght = () => {
+		const {comments} = this.props.comments;
+		if(comments.lenght > 0){
+			return(
+				<span>there are {comments.lenght} comments for this post</span>
+			)
+		}else{
+			return(
+				<span>there are 0 comments for this post</span>
+			)
+		}
+	}
+
 	componentWillMount(){
 		this.props.getComments(this.props.ID)
 	}
@@ -69,28 +82,31 @@ class Comments extends Component {
 		const hide = {display: 'none'};
 		return (
 			<div>
-				<CreateComment/>
 				{comments != null &&
-					comments.map((comment, index) =>
-						<Row key={index}>
-							{comment.parentDeleted !== true &&
-								<Col key={index + comment.id} s={6} m={4} offset='s3 m4'>
-									<CardPanel key={comment.id} className="small">
-										<h5 key={comment.author}>{comment.author}</h5>
-										<p key={comment.author + index}>{comment.body}</p>
-										<button value={index} onClick={(event) => 
-											this.openModal(event.target.value)}>
-											edit
-										</button>
-										<span className='clear'>Score: {comment.voteScore}  
-											<Button floating icon='thumb_up' onClick={() => this.vote({option: 'upVote', comment, index})} className='clear'/>
-											<Button floating icon='thumb_down' onClick={() => this.vote({option: 'downVote', comment, index})} className='clear'/>
-										</span>
-									</CardPanel>
-								</Col>
-							}
-						</Row>
-					)
+					<div>
+						<CreateComment/>
+						{this.commentsLenght()}
+						{comments.map((comment, index) =>
+							<Row key={index}>
+								{comment.parentDeleted !== true &&
+									<Col key={index + comment.id} s={6} m={4} offset='s3 m4'>
+										<CardPanel key={comment.id} className="small">
+											<h5 key={comment.author}>{comment.author}</h5>
+											<p key={comment.author + index}>{comment.body}</p>
+											<button value={index} onClick={(event) => 
+												this.openModal(event.target.value)}>
+												edit
+											</button>
+											<span className='clear'>Score: {comment.voteScore}  
+												<Button floating icon='thumb_up' onClick={() => this.vote({option: 'upVote', comment, index})} className='clear'/>
+												<Button floating icon='thumb_down' onClick={() => this.vote({option: 'downVote', comment, index})} className='clear'/>
+											</span>
+										</CardPanel>
+									</Col>
+								}
+							</Row>
+						)}
+					</div>
 				}
 				{this.state.isOpen &&
 					<Modal fixedFooter
@@ -104,7 +120,6 @@ class Comments extends Component {
 						}
 						style={this.state.isOpen ? display : hide}>
 					<div>
-						{console.log(comments)}
 						<Input
 							type="textarea"
 							label="Comment"

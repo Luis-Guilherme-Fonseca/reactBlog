@@ -71,10 +71,18 @@ export const votePost = (id, option) => dispatch => (
 		.catch((err) => dispatch(getError(err)))
 )
 
+export const disablePost = (posts, post) => {
+	return{
+		type: DISABLE_POST,
+		posts,
+		post
+	}
+} 
+ 
 export const deletePost = (id, posts) => dispatch => (
 	ReadableAPI
 		.deletePost(id)
-		.then(() => dispatch(getPosts(posts)))
+		.then((res) => dispatch(disablePost(posts, res)))
 		.catch((err) => dispatch(getError(err)))
 )
 

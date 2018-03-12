@@ -4,6 +4,7 @@ import {
 	GET_POSTS,
 	ORDER_POSTS,
 	ADD_POST,
+	DISABLE_POST,
 	GET_COMMENTS,
 	ADD_COMMENT,
 	GET_ERROR,
@@ -42,6 +43,12 @@ function posts(state = {order: "votes+"}, action){
 			return {
 				...state,
 				[posts]: posts.push(post)
+			}
+		case DISABLE_POST:
+			return {
+				...state,
+				posts: posts,
+				post
 			}
 		default:
 			return state

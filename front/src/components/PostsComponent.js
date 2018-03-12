@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, Col, Row, Button, Modal, Input } from 'react-materialize';
 import { connect } from 'react-redux';
-import { deletePost, createPost } from '../actions';
+import { fetchPosts, deletePost, createPost } from '../actions';
 import Order from './OrderComponent';
 import uuidv4 from 'uuid/v4';
 
@@ -50,11 +50,15 @@ class PostsComponent extends Component {
 
 			this.props.addpost(post, posts);
 		}
-		this.setState({author: ""});
-		this.setState({body: ""});
-		this.setState({title: ""});
+		this.closeModal()
 	}
 
+	componentDidMount(){
+		this.props.getPosts()
+		if(this.props.posts['post']){
+			alert("post deletado com sucesso")
+		}
+	}
 
 	render(){
 		const {posts} = this.props.posts;
@@ -69,7 +73,7 @@ class PostsComponent extends Component {
 					<Row>
 						{posts.map((post, index) =>	
 							<Col s={6} m={4} key={index}>
-								<Card className='small'
+								<Card className='large'
 									key={post.title}
 									header={<CardTitle image={imageURL}>{post.title}</CardTitle>}
 									actions={[<a key={post + index} href={"/post/" + post.id}>Know more about this</a>, 
@@ -79,7 +83,13 @@ class PostsComponent extends Component {
 										icon="clear" 
 										value={index} 
 										onClick={() => this.deletePost(index)}/>]}>
-									<p>{post.body.substr(0, 120)}...</p>									
+									<b>Post By: {post.author}</b>	
+									<p >{post.body.substr(0, 50)}...</p>
+									<p >there are {post.commentCount} comments for this post</p>
+									<span>Readers review: {post.voteScore}  
+										<Button floating icon='thumb_up' onClick={() => this.vote('upVote')} className='clear'/>
+										<Button floating icon='thumb_down' onClick={() => this.vote('downVote')} className='clear'/>
+									</span>
 								</Card>
 							</Col>
 						)}
@@ -142,6 +152,7 @@ function mapStateToProps ({ posts, categories }) {
 
 function mapDispatchToProps (dispatch) {
 	return {
+		getPosts: () => dispatch(fetchPosts()),
 		disablePost: (id, posts) => dispatch(deletePost(id, posts)),
 		addpost: (post, posts) => dispatch(createPost(post, posts))
 	}

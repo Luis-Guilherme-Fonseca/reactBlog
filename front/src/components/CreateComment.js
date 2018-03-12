@@ -22,7 +22,7 @@ class CreateComment extends Component{
 			comment.body = body;
 			comment.timestamp = Date.now();
 			comment.id = uuid();
-			comment.parentId = comments[0].parentId;
+			comment.parentId = this.props.posts['posts'].parentId;
 
 			this.props.addComments(comment, comments)
 		}
@@ -49,10 +49,10 @@ class CreateComment extends Component{
 	}
 }
 
-function mapStateToProps ({ comments, comment }) {
+function mapStateToProps ({ comments, posts }) {
 	return {
 		comments,
-		comment
+		posts
 	}
 }
 
