@@ -22,7 +22,7 @@ class CreateComment extends Component{
 			comment.body = body;
 			comment.timestamp = Date.now();
 			comment.id = uuid();
-			comment.parentId = this.props.posts['posts'].parentId;
+			comment.parentId = this.props.posts['posts'].id;
 
 			this.props.addComments(comment, comments)
 		}
@@ -42,6 +42,7 @@ class CreateComment extends Component{
 								Post Comment
 							</button>
 						</Card>
+											
 					</Col>
 				</Row>
 			</div>

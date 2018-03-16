@@ -12,10 +12,10 @@ import reducer from './reducers';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const store = createStore(
-  reducer,
-  composeEnhancers(
-    applyMiddleware(thunk)
-  )
+	reducer,
+	composeEnhancers(
+		applyMiddleware(thunk)
+	)
 )
 
 ReactDOM.render(
@@ -23,8 +23,7 @@ ReactDOM.render(
 		<BrowserRouter>
 			<App />
 		</BrowserRouter>
-	</Provider>
-	, 
+	</Provider>, 
 	document.getElementById('root')
-	);
+);
 registerServiceWorker();

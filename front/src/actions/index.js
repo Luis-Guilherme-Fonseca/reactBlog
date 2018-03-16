@@ -57,6 +57,13 @@ export const editPost = (post) => dispatch => (
 		.catch((err) => dispatch(getError(err)))
 )
 
+export const editPosts = (post, posts) => dispatch => (
+	ReadableAPI
+		.editPost(post.id, post.title, post.body)
+		.then(() => dispatch(getPosts(posts)))
+		.catch((err) => dispatch(getError(err)))
+)
+
 export const fetchCategoryPosts = (category) => dispatch => (
 	ReadableAPI
 		.getPostsByCategory(category)
@@ -68,6 +75,13 @@ export const votePost = (id, option) => dispatch => (
 	ReadableAPI
 		.postVote(id, option)
 		.then(post => dispatch(getPosts(post)))
+		.catch((err) => dispatch(getError(err)))
+)
+
+export const votePosts = (id, option, posts) => dispatch => (
+	ReadableAPI
+		.postVote(id, option)
+		.then(() => dispatch(getPosts(posts)))
 		.catch((err) => dispatch(getError(err)))
 )
 

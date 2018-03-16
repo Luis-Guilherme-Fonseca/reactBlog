@@ -58,11 +58,11 @@ class Comments extends Component {
 		this.props.commentVote(res.comment.id, res.option, comments);
 	}
 
-	commentsLenght = () => {
+	commentsLength = () => {
 		const {comments} = this.props.comments;
-		if(comments.lenght > 0){
+		if(comments.length > 0){
 			return(
-				<span>there are {comments.lenght} comments for this post</span>
+				<span>there are {comments.length} comments for this post</span>
 			)
 		}else{
 			return(
@@ -85,7 +85,7 @@ class Comments extends Component {
 				{comments != null &&
 					<div>
 						<CreateComment/>
-						{this.commentsLenght()}
+						{this.commentsLength()}	
 						{comments.map((comment, index) =>
 							<Row key={index}>
 								{comment.parentDeleted !== true &&

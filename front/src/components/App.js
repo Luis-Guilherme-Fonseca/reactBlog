@@ -26,7 +26,7 @@ class App extends Component {
 							<NavItem href='/'><Icon>home</Icon></NavItem>
 							{categories != null &&
 								categories.map((category, index) =>
-									<NavItem key={index} href={"/posts/" + category.path}>{category.name}</NavItem>
+									<NavItem key={index} href={"/" + category.path}>{category.name}</NavItem>
 								) 
 							}
 						</Navbar>
@@ -34,11 +34,11 @@ class App extends Component {
 							<PostsComponent/>
 						}/>
 
-						<Route path='/posts/:category' render={routeProps =>
+						<Route exact path='/:category' render={routeProps =>
 							<Category {...routeProps}/>
 						}/>
 
-						<Route path='/post/:ID' render={routeProps =>
+						<Route path='/:category/:ID' render={routeProps =>
 							<Post {...routeProps}/>
 						}/>
 					</div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, Col, Row, Button, Modal, Input } from 'react-materialize';
 import { connect } from 'react-redux';
-import { fetchPosts, deletePost, createPost } from '../actions';
+import { fetchPosts, deletePost, createPost, votePosts, editPosts } from '../actions';
 import Order from './OrderComponent';
 import uuidv4 from 'uuid/v4';
 
@@ -9,14 +9,22 @@ import uuidv4 from 'uuid/v4';
 class PostsComponent extends Component {
 	state={
 		isOpen: false,
+		isEOpen: false,
 		body: '',
 		title: '',
 		author: '',
-		category: ''
+		category: '',
+		index: null,
 	}
 
-	openModal = (index) => {
+	openModal = () => {
 		this.setState({isOpen: true});
+	}
+
+	openEModal = (index) => {
+		this.setState({isEOpen: true});
+		this.setState({index});
+		console.log(index)
 	}
 	
 	closeModal = () => {
@@ -25,6 +33,13 @@ class PostsComponent extends Component {
 		this.setState({title: ''});
 		this.setState({author: ''});
 		this.setState({category: ''})
+	}
+
+	closeEModal = () => {
+		this.setState({isEOpen: false});
+		this.setState({body: ''});
+		this.setState({title: ''});
+		this.setState({index: null});
 	}
 
 	deletePost = (index) => {
@@ -48,9 +63,34 @@ class PostsComponent extends Component {
 			post.timestamp = Date.now();
 			post.id = uuid();
 
-			this.props.addpost(post, posts);
+			this.props.addPost(post, posts);
 		}
 		this.closeModal()
+	}
+
+	vote = ({option, id, index}) => {
+		const {posts} = this.props.posts;
+		if('upVote' === option){
+			posts[index].voteScore++;
+		}else if('downVote' === option){
+			posts[index].voteScore--;
+		}
+
+		this.props.postVote(id, option, posts);
+	}
+
+	updatePost = () => {
+		let posts = this.props.posts['posts'];
+		let post = this.props.posts['posts'][this.state.index];
+		if(this.state.body){
+			post.body = this.state.body
+		}
+		if(this.state.title){
+			post.title = this.state.title
+		}
+		posts[this.state.index] = post;
+		this.props.editPost(post, posts);
+		this.closeEModal();
 	}
 
 	componentDidMount(){
@@ -76,19 +116,21 @@ class PostsComponent extends Component {
 								<Card className='large'
 									key={post.title}
 									header={<CardTitle image={imageURL}>{post.title}</CardTitle>}
-									actions={[<a key={post + index} href={"/post/" + post.id}>Know more about this</a>, 
+									actions={[<a key={post + index} href={"/" + post.category + "/" + post.id}>Know more about this</a>, 
 									<Button key={'but' + index}
 										floating 
 										className='red '
 										icon="clear" 
 										value={index} 
-										onClick={() => this.deletePost(index)}/>]}>
+										onClick={() => this.deletePost(index)}/>,
+										<Button key={index + post}	icon="edit"
+											onClick={() => this.openEModal(index)}/>]}>
 									<b>Post By: {post.author}</b>	
 									<p >{post.body.substr(0, 50)}...</p>
 									<p >there are {post.commentCount} comments for this post</p>
-									<span>Readers review: {post.voteScore}  
-										<Button floating icon='thumb_up' onClick={() => this.vote('upVote')} className='clear'/>
-										<Button floating icon='thumb_down' onClick={() => this.vote('downVote')} className='clear'/>
+									<span>Readers review: {post.voteScore}
+										<Button floating icon='thumb_up' onClick={() => this.vote({option: 'upVote', id: post.id, index})} className='clear'/>
+										<Button floating icon='thumb_down' onClick={() => this.vote({option: 'downVote', id: post.id, index})} className='clear'/>
 									</span>
 								</Card>
 							</Col>
@@ -137,6 +179,32 @@ class PostsComponent extends Component {
 								/>
 						</div>
 					</Modal>
+				} 
+				{this.state.isEOpen &&
+					<Modal fixedFooter
+						header='Edit post'
+						actions={
+							<div>
+								<button className="btn waves-effect waves-light btn-flat modal-action modal-close" onClick={this.closeEModal}>Close</button>
+								<button className="btn waves-effect waves-light btn-flat modal-action modal-confirm" onClick={this.updatePost}>Save</button>
+							</div>
+						}
+						style={this.state.isEOpen ? display : hide}>
+						<div>
+							<Input
+								type="text"
+								defaultValue={posts.title}
+								label="Title"
+								onChange={(event) => this.setState({title: event.target.value})}
+								/>
+							<Input
+								type="textarea"
+								defaultValue={posts.body}
+								label="Post"
+								onChange={(event) => this.setState({body: event.target.value})}
+								/>
+						</div>
+					</Modal>
 				}
 			</div>
 		)
@@ -154,7 +222,9 @@ function mapDispatchToProps (dispatch) {
 	return {
 		getPosts: () => dispatch(fetchPosts()),
 		disablePost: (id, posts) => dispatch(deletePost(id, posts)),
-		addpost: (post, posts) => dispatch(createPost(post, posts))
+		editPost: (post, posts) => dispatch(editPosts(post, posts)),
+		addPost: (post, posts) => dispatch(createPost(post, posts)),
+		postVote: (id, option, posts) => dispatch(votePosts(id, option, posts)),
 	}
 }
 

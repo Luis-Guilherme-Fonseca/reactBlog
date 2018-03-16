@@ -75,7 +75,6 @@ class Post extends Component {
 									<span>Readers review: {posts.voteScore}  
 											<Button floating icon='thumb_up' onClick={() => this.vote('upVote')} className='clear'/>
 											<Button floating icon='thumb_down' onClick={() => this.vote('downVote')} className='clear'/>
-											<p>there are {posts.commentCount} comments for this post</p>
 									</span>
 								</Col>
 								<Comments ID={this.props.match.params.ID}/>
